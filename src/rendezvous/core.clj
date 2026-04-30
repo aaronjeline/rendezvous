@@ -19,5 +19,5 @@
 (defn -main [& args]
   (let [{:keys [interface]} (parse-args args)
         app                 (server/make-app)]
-    (println (str "Starting rendezvous on " interface ":8080"))
-    (run-jetty app {:host interface :port 8080 :join? true})))
+    (println (str "Starting rendezvous on " interface ":8000"))
+    (run-jetty app {:host interface :port 8000 :join? true})))

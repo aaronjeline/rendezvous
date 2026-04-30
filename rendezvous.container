@@ -1,0 +1,20 @@
+[Unit]
+Description=rendezvous service (podman rootless)
+After=local-fs.target
+
+[Container]
+Image=localhost/rendezvous
+ContainerName=rendezvous
+Network=host
+DropCapability=all
+NoNewPrivileges=true
+
+[Service]
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+MemoryMax=1G
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target
