@@ -1,5 +1,6 @@
 (ns rendezvous.server
   (:require [cheshire.core :as json]
+            [clojure.string :as str]
             [rendezvous.mailbox :as mailbox]))
 
 (defn valid-code? [code]
@@ -27,7 +28,7 @@
     (start-purge-thread store)
      (fn [request]
       (let [{:keys [uri request-method remote-addr headers body]} request
-            remote-addr (or (get headers "x-forwarded-for") remote-addr)
+            remote-addr (or (some-> (get headers "x-forwarded-for") (str/split #"\s*,\s*") first) remote-addr)
             [_ code] (re-matches #"/rendezvous/([^/]+)" uri)]
         (cond
           (nil? code)
