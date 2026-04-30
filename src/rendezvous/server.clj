@@ -26,7 +26,8 @@
   (let [store (atom (mailbox/new-store))]
     (start-purge-thread store)
      (fn [request]
-      (let [{:keys [uri request-method remote-addr body]} request
+      (let [{:keys [uri request-method remote-addr headers body]} request
+            remote-addr (or (get headers "x-forwarded-for") remote-addr)
             [_ code] (re-matches #"/rendezvous/([^/]+)" uri)]
         (cond
           (nil? code)
